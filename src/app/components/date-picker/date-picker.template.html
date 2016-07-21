@@ -19,6 +19,7 @@
         [class.is-label]="!cell.date"
         [class.is-today]="cell.isToday"
         [class.is-mute]="cell.isMute"
+        [class.is-selected]="cell.isSelected"
         (click)="onClickCell(cell)"
         *ngFor="let cell of row"
       >

@@ -1,6 +1,5 @@
 import {
   async,
-  beforeEachProviders,
   describe,
   inject,
   it
@@ -36,7 +35,7 @@ describe('DatePicker', () => {
       directives: [ DatePicker ]
     })
     class TestIOComponent {
-      startDate = new Date(2018, 0, 1)
+      startDate = new Date(2016, 6, 1)
       language = 'xxx'
     }
 
@@ -115,6 +114,44 @@ describe('DatePicker', () => {
       expect(datePickerInstance.prevMode).toHaveBeenCalled()
     })
 
+  })
+
+  describe('render', () => {
+    @Component({
+      template: `
+        <date-picker
+          [startDate]="startDate"
+        >
+        </date-picker>',
+      `,
+      directives: [ DatePicker ]
+    })
+    class TestRenderComponent {
+      startDate = new Date(2016, 6, 19)
+    }
+
+    let datePickerDebugElement: DebugElement
+    let datePickerNativeElement: HTMLElement
+    let datePickerInstance: DatePicker
+    let testComponent: TestRenderComponent
+    let fixtureInstance
+    let today
+
+    beforeEach(async(() => {
+      today = new Date(2016, 6, 20)
+      jasmine.clock().mockDate(today)
+      builder.createAsync(TestRenderComponent).then((f) => {
+        fixture = f
+        fixture.detectChanges()
+        fixtureInstance = fixture.componentInstance
+
+        datePickerDebugElement = fixture.debugElement.query(By.directive(DatePicker))
+        datePickerNativeElement = datePickerDebugElement.nativeElement
+        datePickerInstance = datePickerDebugElement.componentInstance
+        testComponent = fixture.debugElement.componentInstance
+      })
+    }))
+
     it('should render title', () => {
       let title = datePickerNativeElement.querySelector('.range')
       expect(title.textContent.trim()).toEqual('July 2016')
@@ -144,6 +181,9 @@ describe('DatePicker', () => {
       dateCells.forEach((cell, i) => {
         if (i <= 4 || i >= 36) {
           expect(cell.classList).toContain('is-mute')
+        }
+        if (i === 23) {
+          expect(cell.classList).toContain('is-selected')
         }
         if (i === 24) {
           expect(cell.classList).toContain('is-today')
@@ -477,6 +517,7 @@ describe('DatePicker', () => {
         expect(object.label).toBeDefined()
         expect(object.isToday).toBeDefined()
         expect(object.isMute).toBeDefined()
+        expect(object.isSelected).toBeDefined()
       })
 
       it('should format date label', () => {
@@ -523,6 +564,22 @@ describe('DatePicker', () => {
         date = new Date(2016, 7, 1)
         object = datePickerInstance.createDateObject(date, currentDate, mode)
         expect(object.isMute).toBe(true)
+      })
+
+      it('should determine selected date if current mode is Day', () => {
+        currentDate = new Date(2016, 6, 21)
+        let object = datePickerInstance.createDateObject(date, currentDate, Mode.Day)
+        expect(object.isSelected).toBe(true)
+
+        currentDate = new Date(2016, 6, 19)
+        object = datePickerInstance.createDateObject(date, currentDate, Mode.Day)
+        expect(object.isSelected).toBe(false)
+
+        object = datePickerInstance.createDateObject(date, currentDate, Mode.Month)
+        expect(object.isSelected).toBe(false)
+
+        object = datePickerInstance.createDateObject(date, currentDate, Mode.Year)
+        expect(object.isSelected).toBe(false)
       })
     })
 

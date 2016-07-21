@@ -48,33 +48,37 @@ export class DatePicker {
   private DEFAULT_LANG = 'en'
   private locale
 
-  private defaultState = {
-    currentDate: this.startDate,
-    currentMode: Mode.Day,
-    step: this.getStep(Mode.Day)
-  }
-
-  private action$: Subject<any> = new Subject<any>()
-
-  private state$: Observable<any> = this.action$
-    .startWith(this.defaultState)
-    .scan((state, action) => {
-      let newState = this.reducer(state, action)
-      this.sideEffect(newState, action)
-      return newState
-    })
-
-  // tslint:disable-next-line: no-unused-variable
-  private title$: Observable<string> = this.state$
-    .map((state) => this.getTitle(state))
-
-  // tslint:disable-next-line: no-unused-variable
-  private rows$: Observable<Array<any>> = this.state$
-    .map((state) => this.getRows(state))
+  private action$: Subject<any>
+  private state$: Observable<any>
+  private title$: Observable<string>
+  private rows$: Observable<Array<any>>
 
   ngOnInit() {
     this.language = this.language in locales ? this.language : this.DEFAULT_LANG
     this.locale = locales[this.language]
+
+    let defaultState = {
+      currentDate: this.startDate,
+      currentMode: Mode.Day,
+      step: this.getStep(Mode.Day)
+    }
+
+    this.action$ = new Subject<any>()
+
+    this.state$ = this.action$
+      .startWith(defaultState)
+      .scan((state, action) => {
+        let newState = this.reducer(state, action)
+        this.sideEffect(newState, action)
+        return newState
+      })
+
+    this.title$ = this.state$
+      .map((state) => this.getTitle(state))
+
+    this.rows$ = this.state$
+      .map((state) => this.getRows(state))
+
   }
 
   reducer(state, action) {
@@ -333,7 +337,8 @@ export class DatePicker {
       date: date,
       label: this.getDateLabel(date, mode),
       isToday: this.isSameDate(date, new Date(), mode),
-      isMute: mode === Mode.Day ? !this.isSameDate(date, currentDate, Mode.Month) : false
+      isMute: mode === Mode.Day && !this.isSameDate(date, currentDate, Mode.Month),
+      isSelected: mode === Mode.Day && this.isSameDate(date, currentDate, Mode.Day)
     }
   }
 

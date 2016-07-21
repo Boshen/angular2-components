@@ -40,6 +40,10 @@
 }
 
 .cell.is-today {
+  background-color: gray;
+}
+
+.cell.is-selected {
   background-color: blue;
 }
 

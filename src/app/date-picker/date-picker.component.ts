@@ -15,11 +15,16 @@ import { DatePicker } from '../components';
 })
 export class DatePickerPage {
 
+  startDate: Date
+
   constructor(
   ) {
   }
 
   ngOnInit() {
+    let date = new Date()
+    date.setDate(date.getDay() + 1) // tomorrow
+    this.startDate = date
   }
 
   selectDate(date: Date) {
