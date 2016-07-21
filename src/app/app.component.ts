@@ -29,6 +29,10 @@ import { AppState } from './app.service';
         <a [routerLink]=" ['./pie-chart'] ">
           Pie Chart
         </a>
+        |
+        <a [routerLink]=" ['./time-picker'] ">
+          Time Picker
+        </a>
       </span>
     </nav>
 

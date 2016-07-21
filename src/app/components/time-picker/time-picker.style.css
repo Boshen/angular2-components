@@ -1,0 +1,10 @@
+.list {
+  display: block;
+  height: 200px;
+  width: 300px;
+  overflow-y: auto;
+}
+
+.item.is-active {
+  background-color: gray;
+}
