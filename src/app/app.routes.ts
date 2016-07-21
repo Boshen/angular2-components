@@ -1,11 +1,8 @@
-import { WebpackAsyncRoute } from '@angularclass/webpack-toolkit';
 import { RouterConfig } from '@angular/router';
 import { Home } from './home';
 
-import { DataResolver } from './app.resolver';
-
 export const routes: RouterConfig = [
-  { path: '', component: Home }
+  { path: '', component: Home },
 ];
 
 // Async load a component using Webpack's require with es6-promise-loader and webpack `require`

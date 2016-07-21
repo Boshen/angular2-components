@@ -1,15 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "sourceMap": true,
-    "noEmitHelpers": true,
-    "lib": ["es6", "dom"],
-    "strictNullChecks": false,
     "baseUrl": "./src",
+    "lib": ["es6", "dom"],
+    "module": "commonjs",
     "paths": [
     ],
     "types": [
@@ -22,7 +15,25 @@
       "source-map",
       "uglify-js",
       "webpack"
-    ]
+    ],
+    "target": "es5",
+    "sourceMap": true,
+    "moduleResolution": "node",
+
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noEmitHelpers": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "noImplicitUseStrict": false,
+    "noLib": false,
+    "pretty": true,
+    "removeComments": true,
+    "strictNullChecks": false
   },
   "exclude": [
     "node_modules"
