@@ -1,0 +1,43 @@
+<div class="date-picker">
+  <section class="header">
+    <div class="left-arrow" (click)="moveLeft()">
+      <
+    </div>
+
+    <div class="range" (click)="changeMode()">
+      {{ title$ | async }}
+    </div>
+
+    <div class="right-arrow" (click)="moveRight()">
+      >
+    </div>
+  </section>
+
+  <section>
+    <div class="row" *ngFor="let row of rows$ | async">
+      <div class="cell"
+        [class.is-label]="!cell.date"
+        [class.is-today]="cell.isToday"
+        [class.is-mute]="cell.isMute"
+        (click)="onClickCell(cell)"
+        *ngFor="let cell of row"
+      >
+        {{ cell.label }}
+      </div>
+    </div>
+  </section>
+
+  <section class="footer">
+    <div class="today" (click)="today()">
+      Today
+    </div>
+
+    <div class="tomorrow" (click)="tomorrow()">
+      Tomorrow
+    </div>
+
+    <div class="clear" (click)="clear()">
+      Clear
+    </div>
+  </section>
+</div>

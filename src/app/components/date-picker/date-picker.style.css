@@ -1,0 +1,48 @@
+.date-picker {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cell {
+  width: 23%;
+  height: 54px;
+  line-height: 54px;
+  margin: 1%;
+  cursor: pointer;
+  border-radius: 2px;
+  text-align: center;
+}
+
+.cell.is-label {
+  cursor: default;
+  font-weight: bold;
+}
+
+.cell.is-today {
+  background-color: blue;
+}
+
+.cell.is-mute {
+  color: lightgray;
+}

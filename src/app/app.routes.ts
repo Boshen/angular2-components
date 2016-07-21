@@ -1,8 +1,11 @@
 import { RouterConfig } from '@angular/router';
 import { Home } from './home';
 
+import { DatePickerPage } from './date-picker'
+
 export const routes: RouterConfig = [
   { path: '', component: Home },
+  { path: 'date-picker', component: DatePickerPage },
 ];
 
 // Async load a component using Webpack's require with es6-promise-loader and webpack `require`
