@@ -10,6 +10,7 @@ import { TestComponentBuilder, ComponentFixture } from '@angular/compiler/testin
 import { Component, DebugElement } from '@angular/core'
 
 import { DatePicker, Mode } from './date-picker.component'
+import { locales } from './locales'
 
 describe('DatePicker', () => {
   let builder: TestComponentBuilder
@@ -24,12 +25,7 @@ describe('DatePicker', () => {
       template: `
         <date-picker
           [startDate]="startDate"
-          [formatDay]="formatDay"
-          [formatDayHeader]="formatDayHeader"
-          [formatDayTitle]="formatDayTitle"
-          [formatYear]="formatYear"
-          [formatMonth]="formatMonth"
-          [formatMonthTitle]="formatMonthTitle"
+          [language]="language"
           (selectDate)="selectDate = $event"
           (onClickToday)="today = $event"
           (onClickTomorrow)="tomorrow = $event"
@@ -41,12 +37,7 @@ describe('DatePicker', () => {
     })
     class TestIOComponent {
       startDate = new Date(2018, 0, 1)
-      formatDay = 'AAA'
-      formatDayHeader = 'BBB'
-      formatDayTitle = 'CCC'
-      formatYear = 'DDD'
-      formatMonth = 'EEE'
-      formatMonthTitle = 'FFF'
+      language = 'xxx'
     }
 
     let datePickerDebugElement: DebugElement
@@ -73,12 +64,10 @@ describe('DatePicker', () => {
 
     it('should handle inputs', () => {
       expect(datePickerInstance.startDate).toEqual(fixtureInstance.startDate)
-      expect(datePickerInstance.formatDay).toEqual(fixtureInstance.formatDay)
-      expect(datePickerInstance.formatDayHeader).toEqual(fixtureInstance.formatDayHeader)
-      expect(datePickerInstance.formatDayTitle).toEqual(fixtureInstance.formatDayTitle)
-      expect(datePickerInstance.formatYear).toEqual(fixtureInstance.formatYear)
-      expect(datePickerInstance.formatMonth).toEqual(fixtureInstance.formatMonth)
-      expect(datePickerInstance.formatMonthTitle).toEqual(fixtureInstance.formatMonthTitle)
+    })
+
+    it('should set default language and locale', () => {
+      expect(datePickerInstance.language).toEqual('en')
     })
 
     it('should trigger @Output() selectDate', () => {
@@ -128,7 +117,7 @@ describe('DatePicker', () => {
 
     it('should render title', () => {
       let title = datePickerNativeElement.querySelector('.range')
-      expect(title.textContent.trim()).toEqual('CCC')
+      expect(title.textContent.trim()).toEqual('July 2016')
     })
 
     it('should render arrows', () => {
@@ -151,7 +140,7 @@ describe('DatePicker', () => {
 
       let dateCells = cells.slice(7, cells.length)
       expect(dateCells.length).toEqual(6 * 7)
-      expect(dateCells[0].textContent.trim()).toEqual('AAA')
+      expect(dateCells[0].textContent.trim()).toEqual('26')
       dateCells.forEach((cell, i) => {
         if (i <= 4 || i >= 36) {
           expect(cell.classList).toContain('is-mute')
@@ -398,10 +387,9 @@ describe('DatePicker', () => {
         let matrix = datePickerInstance.getDayRows(date)
         expect(matrix.length).toEqual(7) // 6 calendar rows + 1 label row
         // label row
-        expect(matrix[0]).toEqual([
-          {label: 'Sun'}, {label: 'Mon'}, {label: 'Tue'}, {label: 'Wed'},
-          {label: 'Thu'}, {label: 'Fri'}, {label: 'Sat'},
-        ])
+        expect(matrix[0]).toEqual(locales.en.daysMin.map((day) => {
+          return { label: day }
+        }))
         // calendar rows
         matrix.slice(1, matrix.length).forEach((row, i) => {
           expect(row.length).toEqual(7)
@@ -409,8 +397,7 @@ describe('DatePicker', () => {
             let args = (<any>datePickerInstance.createDateObject).calls.argsFor(i * row.length + j)
             expect(args[0]).toEqual(new Date(2016, 5, 26 + i * row.length + j))
             expect(args[1]).toEqual(date)
-            expect(args[2]).toEqual(datePickerInstance.formatDay)
-            expect(args[3]).toEqual(Mode.Day)
+            expect(args[2]).toEqual(Mode.Day)
           })
         })
       })
@@ -421,10 +408,9 @@ describe('DatePicker', () => {
         let matrix = datePickerInstance.getDayRows(date)
         expect(matrix.length).toEqual(6) // 5 calendar rows + 1 label row
         // label row
-        expect(matrix[0]).toEqual([
-          {label: 'Sun'}, {label: 'Mon'}, {label: 'Tue'}, {label: 'Wed'},
-          {label: 'Thu'}, {label: 'Fri'}, {label: 'Sat'},
-        ])
+        expect(matrix[0]).toEqual(locales.en.daysMin.map((day) => {
+          return { label: day }
+        }))
         // calendar rows
         matrix.slice(1, matrix.length).forEach((row, i) => {
           expect(row.length).toEqual(7)
@@ -432,8 +418,7 @@ describe('DatePicker', () => {
             let args = (<any>datePickerInstance.createDateObject).calls.argsFor(i * row.length + j)
             expect(args[0]).toEqual(new Date(2016, 6, 31 + i * row.length + j))
             expect(args[1]).toEqual(date)
-            expect(args[2]).toEqual(datePickerInstance.formatDay)
-            expect(args[3]).toEqual(Mode.Day)
+            expect(args[2]).toEqual(Mode.Day)
           })
         })
       })
@@ -451,8 +436,7 @@ describe('DatePicker', () => {
             let args = (<any>datePickerInstance.createDateObject).calls.argsFor(i * row.length + j)
             expect(args[0]).toEqual(new Date(2016, i * row.length + j, 1))
             expect(args[1]).toEqual(date)
-            expect(args[2]).toEqual(datePickerInstance.formatMonth)
-            expect(args[3]).toEqual(Mode.Month)
+            expect(args[2]).toEqual(Mode.Month)
           })
         })
       })
@@ -470,27 +454,25 @@ describe('DatePicker', () => {
             let args = (<any>datePickerInstance.createDateObject).calls.argsFor(i * row.length + j)
             expect(args[0]).toEqual(new Date(2016 + i * row.length + j, 0, 1))
             expect(args[1]).toEqual(date)
-            expect(args[2]).toEqual(datePickerInstance.formatYear)
-            expect(args[3]).toEqual(Mode.Year)
+            expect(args[2]).toEqual(Mode.Year)
           })
         })
       })
     })
 
     describe('createDateObject', () => {
-      let today, date, currentDate, format, mode
+      let today, date, currentDate, mode
 
       beforeEach(() => {
         today = new Date(2016, 6, 20)
         jasmine.clock().mockDate(today)
         date = new Date(2016, 6, 21)
         currentDate = new Date(2016, 6, 20)
-        format = 'yyyy'
         mode = Mode.Day
       })
 
       it('should create a date object for the UI', () => {
-        let object = datePickerInstance.createDateObject(date, currentDate, format, mode)
+        let object = datePickerInstance.createDateObject(date, currentDate, mode)
         expect(object.date).toEqual(date)
         expect(object.label).toBeDefined()
         expect(object.isToday).toBeDefined()
@@ -498,42 +480,48 @@ describe('DatePicker', () => {
       })
 
       it('should format date label', () => {
-        let object = datePickerInstance.createDateObject(date, currentDate, format, mode)
+        let object = datePickerInstance.createDateObject(date, currentDate, Mode.Year)
         expect(object.label).toEqual('2016')
 
-        format = 'dd'
-        object = datePickerInstance.createDateObject(date, currentDate, format, mode)
+        object = datePickerInstance.createDateObject(date, currentDate, Mode.Month)
+        expect(object.label).toEqual('Jul')
+
+        object = datePickerInstance.createDateObject(date, currentDate, Mode.Day)
         expect(object.label).toEqual('21')
+
+        expect(() => {
+          datePickerInstance.createDateObject(date, currentDate, 999)
+        }).toThrow()
       })
 
       it('should determine today for highlighting cell of today', () => {
-        let object = datePickerInstance.createDateObject(date, currentDate, format, mode)
+        let object = datePickerInstance.createDateObject(date, currentDate, mode)
         expect(object.isToday).toBe(false)
 
         jasmine.clock().mockDate(date)
-        object = datePickerInstance.createDateObject(date, currentDate, format, mode)
+        object = datePickerInstance.createDateObject(date, currentDate, mode)
         expect(object.isToday).toBe(true)
       })
 
       it('should determine if date is in current month for muting cells in day view', () => {
         // Month View
-        let object = datePickerInstance.createDateObject(date, currentDate, format, Mode.Month)
+        let object = datePickerInstance.createDateObject(date, currentDate, Mode.Month)
         expect(object.isMute).toBe(false)
 
         // Year View
-        object = datePickerInstance.createDateObject(date, currentDate, format, Mode.Year)
+        object = datePickerInstance.createDateObject(date, currentDate, Mode.Year)
         expect(object.isMute).toBe(false)
 
         // Day View
-        object = datePickerInstance.createDateObject(date, currentDate, format, mode)
+        object = datePickerInstance.createDateObject(date, currentDate, mode)
         expect(object.isMute).toBe(false)
 
         date = new Date(2016, 5, 30)
-        object = datePickerInstance.createDateObject(date, currentDate, format, mode)
+        object = datePickerInstance.createDateObject(date, currentDate, mode)
         expect(object.isMute).toBe(true)
 
         date = new Date(2016, 7, 1)
-        object = datePickerInstance.createDateObject(date, currentDate, format, mode)
+        object = datePickerInstance.createDateObject(date, currentDate, mode)
         expect(object.isMute).toBe(true)
       })
     })

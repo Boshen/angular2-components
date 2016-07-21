@@ -9,6 +9,8 @@ import 'rxjs/add/operator/publishReplay'
 import 'rxjs/add/operator/scan'
 import 'rxjs/add/operator/startWith'
 
+import { locales } from './locales'
+
 export enum Mode {
   Day,
   Month,
@@ -35,14 +37,7 @@ export enum Action {
 export class DatePicker {
 
   @Input() startDate: Date = new Date()
-
-  @Input() formatDay: string = 'dd'
-  @Input() formatDayHeader: string = 'EEE'
-  @Input() formatDayTitle: string = 'MMMM yyyy'
-  @Input() formatYear: string = 'yyyy'
-
-  @Input() formatMonth: string = 'MMM'
-  @Input() formatMonthTitle: string = 'yyyy'
+  @Input() language: string
 
   @Output() selectDate: EventEmitter<Date> = new EventEmitter<Date>()
   @Output() onClickToday: EventEmitter<Date> = new EventEmitter<Date>()
@@ -50,6 +45,8 @@ export class DatePicker {
   @Output() onClickClear: EventEmitter<Date> = new EventEmitter<Date>()
 
   private YEAR_RANGE = 12
+  private DEFAULT_LANG = 'en'
+  private locale
 
   private defaultState = {
     currentDate: this.startDate,
@@ -74,6 +71,11 @@ export class DatePicker {
   // tslint:disable-next-line: no-unused-variable
   private rows$: Observable<Array<any>> = this.state$
     .map((state) => this.getRows(state))
+
+  ngOnInit() {
+    this.language = this.language in locales ? this.language : this.DEFAULT_LANG
+    this.locale = locales[this.language]
+  }
 
   reducer(state, action) {
     let newPartialState
@@ -168,15 +170,15 @@ export class DatePicker {
   getTitle({ currentDate, currentMode }): string {
     switch (currentMode) {
       case Mode.Day:
-        return new DatePipe().transform(currentDate, this.formatDayTitle)
+        return `${this.locale.months[currentDate.getMonth()]} ${currentDate.getFullYear()}`
       case Mode.Month:
-        return new DatePipe().transform(currentDate, this.formatMonthTitle)
+        return currentDate.getFullYear().toString()
       case Mode.Year:
         let startingYear = currentDate.getFullYear()
         let endingYear = startingYear + this.YEAR_RANGE - 1
         return [
-          new DatePipe().transform(new Date(startingYear, 1, 0), this.formatYear),
-          new DatePipe().transform(new Date(endingYear, 1, 0), this.formatYear)
+          (new Date(startingYear, 1, 0).getFullYear()).toString(),
+          (new Date(endingYear, 1, 0).getFullYear()).toString()
         ].join(' - ')
       default:
         throw new Error()
@@ -295,15 +297,15 @@ export class DatePicker {
     let days = []
     let tmpDate = new Date(startDate.toString())
     while (tmpDate.valueOf() <= endDate.valueOf()) {
-      days.push(this.createDateObject(new Date(tmpDate.toString()), date, this.formatDay, Mode.Day))
+      days.push(this.createDateObject(new Date(tmpDate.toString()), date, Mode.Day))
       tmpDate.setDate(tmpDate.getDate() + 1)
       tmpDate = new Date(tmpDate.toString())
     }
     days = this.split(days, 7)
 
-    let labels = days[0].map((day) => {
+    let labels = days[0].map((day, i) => {
       return {
-        label: new DatePipe().transform(day.date, this.formatDayHeader)
+        label: this.locale.daysMin[i]
       }
     })
 
@@ -313,7 +315,7 @@ export class DatePicker {
   getMonthRows(date: Date): Array<any> {
     let year = date.getFullYear()
     let months = range(12).map((i) => {
-      return this.createDateObject(new Date(year, i, 1), date, this.formatMonth, Mode.Month)
+      return this.createDateObject(new Date(year, i, 1), date, Mode.Month)
     })
     return this.split(months, 3)
   }
@@ -321,17 +323,30 @@ export class DatePicker {
   getYearRows(date: Date): Array<any> {
     let start = date.getFullYear()
     let years = range(this.YEAR_RANGE).map((i) => {
-      return this.createDateObject(new Date(start + i, 0, 1), date, this.formatYear, Mode.Year)
+      return this.createDateObject(new Date(start + i, 0, 1), date, Mode.Year)
     })
     return this.split(years, 4)
   }
 
-  createDateObject(date, currentDate, format, mode) {
+  createDateObject(date: Date, currentDate: Date, mode: Mode) {
     return {
       date: date,
-      label: new DatePipe().transform(date, format),
+      label: this.getDateLabel(date, mode),
       isToday: this.isSameDate(date, new Date(), mode),
       isMute: mode === Mode.Day ? !this.isSameDate(date, currentDate, Mode.Month) : false
+    }
+  }
+
+  getDateLabel(date: Date, mode: Mode): string {
+    switch (mode) {
+      case Mode.Day:
+        return new DatePipe().transform(date, 'dd')
+      case Mode.Month:
+        return this.locale.monthsShort[date.getMonth()]
+      case Mode.Year:
+        return date.getFullYear().toString()
+      default:
+        throw new Error()
     }
   }
 
