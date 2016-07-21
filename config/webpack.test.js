@@ -110,16 +110,16 @@ module.exports = {
        */
       {
         test: /\.ts$/,
-        loader: 'awesome-typescript-loader',
-        query: {
-          compilerOptions: {
+        loaders: ['awesome-typescript-loader', 'angular2-template-loader'],
+        // query: {
+          // compilerOptions: {
 
             // Remove TypeScript helpers to be injected
             // below by DefinePlugin
-            removeComments: true
+            // removeComments: true
 
-          }
-        },
+          // }
+        // },
         exclude: [/\.e2e\.ts$/]
       },
 
@@ -161,14 +161,14 @@ module.exports = {
        *
        * See: https://github.com/deepsweet/istanbul-instrumenter-loader
        */
-      {
-        test: /\.(js|ts)$/, loader: 'istanbul-instrumenter-loader',
-        include: helpers.root('src'),
-        exclude: [
-          /\.(e2e|spec)\.ts$/,
-          /node_modules/
-        ]
-      }
+      // {
+        // test: /\.(js|ts)$/, loader: 'istanbul-instrumenter-loader',
+        // include: helpers.root('src'),
+        // exclude: [
+          // /\.(e2e|spec)\.ts$/,
+          // /node_modules/
+        // ]
+      // }
 
     ]
   },
