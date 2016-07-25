@@ -72,6 +72,8 @@ export class DatePicker {
         this.sideEffect(newState, action)
         return newState
       })
+      .publishReplay(1)
+      .refCount()
 
     this.title$ = this.state$
       .map((state) => this.getTitle(state))
