@@ -113,7 +113,7 @@ export class DatePicker {
         newPartialState = this.getClear()
         break
       case Action.ClickCell:
-        newPartialState = this.nextMode(action.data, state.currentMode)
+        newPartialState = this.nextMode(action.payload, state.currentMode)
         break
       default:
         throw new Error()
@@ -134,7 +134,7 @@ export class DatePicker {
         break
       case Action.ClickCell:
         if (state.currentMode === Mode.Day) {
-          this.selectDate.emit(action.data)
+          this.selectDate.emit(action.payload)
         }
         break
       default:
@@ -170,7 +170,7 @@ export class DatePicker {
     if (!cell.date) { // skip label cell
       return
     }
-    this.action$.next({ type: Action.ClickCell, data: cell.date })
+    this.action$.next({ type: Action.ClickCell, payload: cell.date })
   }
 
   getTitle({ currentDate, currentMode }): string {
