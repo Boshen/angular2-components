@@ -24,7 +24,7 @@ describe('DatePicker', () => {
       template: `
         <date-picker
           [startDate]="startDate"
-          [language]="language"
+          [language]="'zh'"
           (selectDate)="selectDate = $event"
           (onClickToday)="today = $event"
           (onClickTomorrow)="tomorrow = $event"
@@ -65,8 +65,8 @@ describe('DatePicker', () => {
       expect(datePickerInstance.startDate).toEqual(fixtureInstance.startDate)
     })
 
-    it('should set default language and locale', () => {
-      expect(datePickerInstance.language).toEqual('en')
+    it('should set default locale', () => {
+      expect(datePickerInstance.locale).toEqual(locales['zh'])
     })
 
     it('should trigger @Output() selectDate', () => {

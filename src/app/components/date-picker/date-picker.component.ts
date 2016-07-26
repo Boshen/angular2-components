@@ -37,25 +37,25 @@ export enum Action {
 export class DatePicker {
 
   @Input() startDate: Date = new Date()
-  @Input() language: string
+  @Input() set language(lang: string) {
+    this.locale = locales[lang in locales ? lang : this.DEFAULT_LANG]
+  }
 
   @Output() selectDate: EventEmitter<Date> = new EventEmitter<Date>()
   @Output() onClickToday: EventEmitter<Date> = new EventEmitter<Date>()
   @Output() onClickTomorrow: EventEmitter<Date> = new EventEmitter<Date>()
   @Output() onClickClear: EventEmitter<Date> = new EventEmitter<Date>()
 
-  private YEAR_RANGE = 12
-  private DEFAULT_LANG = 'en'
-  private locale
+  public DEFAULT_LANG = 'en'
+  public locale = locales[this.DEFAULT_LANG]
 
+  private YEAR_RANGE = 12
   private action$: Subject<any>
   private state$: Observable<any>
   private title$: Observable<string>
   private rows$: Observable<Array<any>>
 
   ngOnInit() {
-    this.language = this.language in locales ? this.language : this.DEFAULT_LANG
-    this.locale = locales[this.language]
 
     let defaultState = {
       currentDate: this.startDate,
