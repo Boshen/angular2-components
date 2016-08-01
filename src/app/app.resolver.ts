@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
+import { DnDService } from './components'
+
 @Injectable()
 export class DataResolver implements Resolve<any> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -12,5 +14,6 @@ export class DataResolver implements Resolve<any> {
 
 // an array of services to resolve routes with data
 export const APP_RESOLVER_PROVIDERS = [
-  DataResolver
+  DataResolver,
+  DnDService
 ];

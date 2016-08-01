@@ -1,0 +1,35 @@
+<div class="page">
+  <ul class="list" dnd-target>
+    <li dnd-source>1</li>
+    <li dnd-source>Drag Me</li>
+    <li dnd-source>2</li>
+    <li dnd-source>3</li>
+    <li dnd-source>4</li>
+    <li dnd-source>5</li>
+    <li dnd-source>6</li>
+  </ul>
+
+  <ul class="list" dnd-target>
+    <li *ngFor="let i of list">
+      <div>
+        <span>{{ i }}</span>
+        <span>asdf</span>
+      </div>
+    </li>
+  </ul>
+
+  <div>
+    <ul class="h-list" dnd-target>
+      <li *ngFor="let i of list" dnd-source>
+        <div>
+          <span>{{ i }}</span>
+          <span>asdf</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+<div class="drag-clone">
+</div>
