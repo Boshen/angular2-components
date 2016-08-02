@@ -22,22 +22,21 @@ export class DnDService {
   private mouseup$: Observable<any> = Observable.fromEvent(document, 'mouseup')
   private mousemove$: Observable<any> = Observable.fromEvent(document, 'mousemove')
   public dragEnter$: Subject<any> = new Subject<any>()
+  private previousDropTarget
 
   constructor() {
   }
 
-  addSource(element, payload) {
-    if (!this.sources.has(element)) {
-      let subscription = this.listenSource(element, payload)
-      this.sources.set(element, subscription)
-    }
+  addSource(dragSource, dragStart$, sourceEvents) {
+    this.listenSource(dragSource, dragStart$, sourceEvents)
+    // this.sources.set(element, subscription)
   }
 
-  removeSource(element) {
-    let subscription: Subscription = this.sources.get(element)
-    subscription.unsubscribe()
-    this.sources.delete(element)
-  }
+  // removeSource(element) {
+    // let subscription = this.sources.get(element)
+    // subscription.unsubscribe()
+    // this.sources.delete(element)
+  // }
 
   addTarget(element, subject) {
     this.targets.set(element, subject)
@@ -47,26 +46,29 @@ export class DnDService {
     this.targets.delete(element)
   }
 
-  private listenSource(element, payload) {
-    return Observable.fromEvent(element, 'mousedown')
-      .filter((e: any) => {
+  private listenSource(dragSource, dragStart$, sourceEvents) {
+    dragStart$
+      .filter(({e}) => {
         return !(this.whichMouseButton(e) !== 1 || e.metaKey || e.ctrlKey)
       })
-      .concatMap((md: any) => {
-        let parent = element.parentNode
-        let rect = element.getBoundingClientRect()
-        let clone = element.cloneNode(true)
+      .do(({payload}) => {
+        sourceEvents.onStart.emit({removeIndex: payload.sourceIndex})
+      })
+      .concatMap(({e, payload}) => {
+        let parent = dragSource.parentNode
+        let rect = dragSource.getBoundingClientRect()
+        let clone = dragSource.cloneNode(true)
         clone.style.width = this.getRectWidth(rect) + 'px'
         clone.style.height = this.getRectHeight(rect) + 'px'
         clone.style.position = 'fixed'
         clone.style.display = 'none'
         clone.className += ' drag-clone'
-        element.style.opacity = 0.2
+        dragSource.style.opacity = 0.2
         document.body.appendChild(clone)
 
-        let offset = this.getOffset(element);
-        let offsetX = this.getCoord('pageX', md) - offset.left;
-        let offsetY = this.getCoord('pageY', md) - offset.top;
+        let offset = this.getOffset(dragSource);
+        let offsetX = this.getCoord('pageX', e) - offset.left;
+        let offsetY = this.getCoord('pageY', e) - offset.top;
 
         return this.mousemove$
           // .debounceTime(100)
@@ -85,21 +87,34 @@ export class DnDService {
             let elementBehindCursor = this.getElementBehindPoint(clone, mm.clientX, mm.clientY)
             let dropTarget = this.getDropTarget(elementBehindCursor, payload.key)
 
+
             if (dropTarget) {
               immediate = this.getImmediateChild(dropTarget, elementBehindCursor)
               reference = this.getReference(dropTarget, immediate, clientX, clientY)
               this.targets.get(dropTarget).dragMove$.next({
                 clone: clone,
-                element: element,
+                dragSource: dragSource,
                 reference: reference,
                 payload: payload
               })
+              if (!this.previousDropTarget) {
+                this.previousDropTarget = dropTarget
+                this.targets.get(dropTarget).dragEnter$.next()
+              }
+            } else {
+              if (this.previousDropTarget) {
+                this.targets.get(this.previousDropTarget).dragLeave$.next()
+              }
+              this.previousDropTarget = null
             }
+
+            sourceEvents.onMove.emit()
+
             return {
               parent: parent,
               clone: clone,
               dropTarget: dropTarget,
-              element: element,
+              dragSource: dragSource,
               immediate: immediate,
               reference: reference,
               payload: payload
@@ -111,7 +126,7 @@ export class DnDService {
               parentNode.removeChild(clone)
             }
             clone.remove()
-            element.style.opacity = 1
+            dragSource.style.opacity = 1
           }))
           .takeLast(1)
           .do((o) => {
@@ -121,6 +136,7 @@ export class DnDService {
               }
               this.targets.get(o.dropTarget).dragEnd$.next(o)
             }
+            sourceEvents.onEnd.emit()
           })
       }).subscribe()
   }

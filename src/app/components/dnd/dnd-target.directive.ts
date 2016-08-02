@@ -1,4 +1,4 @@
-import { Directive, Input, Output, OnInit, OnDestroy, ViewContainerRef, HostListener } from '@angular/core'
+import { Directive, Input, Output, OnInit, OnDestroy, ViewContainerRef, HostListener, EventEmitter } from '@angular/core'
 import { Subject } from 'rxjs/Subject'
 import { Observable } from 'rxjs/Observable'
 import { Subscription } from 'rxjs/Subscription'
@@ -18,10 +18,33 @@ export class DnDTarget implements OnInit, OnDestroy {
 
   @Input('dnd-target') key = ''
 
-  private dragEnd$ = new Subject<any>()
+  // element is added to the current list
+  @Output() onAdd = new EventEmitter()
+
+  // element is removed from the current list
+  @Output() onRemove = new EventEmitter()
+
+  // changed sorting within the current list
+  @Output() onUpdate = new EventEmitter()
+
+  // element entered container
+  @Output() onEnter = new EventEmitter()
+
+  // element left container
+  @Output() onLeave = new EventEmitter()
+
+  // element moving inside container
+  @Output() onMove = new EventEmitter()
+
+  private dragEnter$ = new Subject<any>()
+  private dragLeave$ = new Subject<any>()
   private dragMove$ = new Subject<any>()
+  private dragEnd$ = new Subject<any>()
+
   private subscription1
   private subscription2
+  private subscription3
+  private subscription4
 
   constructor(
     private dndService: DnDService,
@@ -33,6 +56,8 @@ export class DnDTarget implements OnInit, OnDestroy {
     this.dndService.addTarget(this.viewContainerRef.element.nativeElement, {
       dragEnd$: this.dragEnd$,
       dragMove$: this.dragMove$,
+      dragEnter$: this.dragEnter$,
+      dragLeave$: this.dragLeave$,
       key: this.key
     })
 
@@ -45,15 +70,28 @@ export class DnDTarget implements OnInit, OnDestroy {
         }
       })
       if (dropTarget === o.parent) { // source within target
-        console.log('self', 'add: ',  insertIndex, 'remove: ', o.payload.sourceIndex)
+        if (insertIndex) {
+          this.onUpdate.emit({removeIndex: o.payload.sourceIndex, insertIndex: insertIndex})
+        } else {
+          this.onRemove.emit({removeIndex: o.payload.sourceIndex})
+        }
       } else {
-        console.log('self', 'add: ',  insertIndex)
+        this.onAdd.emit({insertIndex: insertIndex})
       }
     })
 
     this.subscription2 = this.dragMove$.subscribe((o) => {
-      dropTarget.insertBefore(o.element, o.reference)
+      this.onMove.emit('DRAG MOVE')
+      dropTarget.insertBefore(o.dragSource, o.reference)
     })
+
+    this.subscription3 = this.dragEnter$.subscribe((o) => {
+      this.onEnter.emit('DRAG Enter')
+    })
+    this.subscription4 = this.dragLeave$.subscribe((o) => {
+      this.onLeave.emit('DRAG Leave')
+    })
+
   }
 
   ngOnDestroy() {
@@ -61,6 +99,8 @@ export class DnDTarget implements OnInit, OnDestroy {
 
     this.subscription1.unsubscribe()
     this.subscription2.unsubscribe()
+    this.subscription3.unsubscribe()
+    this.subscription4.unsubscribe()
   }
 
 }
