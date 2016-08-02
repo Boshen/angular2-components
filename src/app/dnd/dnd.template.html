@@ -3,18 +3,18 @@
 <section class="page">
   <ul class="scrum"
     [dnd-target]="'stage'"
-    (onAdd)="onTargetAdd($event)"
-    (onRemove)="onTargetRemove($event)"
-    (onUpdate)="onTargetUpdate($event)"
-    (onEnter)="onTargetEnter($event)"
-    (onLeave)="onTargetLeave($event)"
-    (onMove)="onTargetMove($event)"
+    (onAdd)="_onTargetAdd($event)"
+    (onRemove)="_onTargetRemove($event)"
+    (onUpdate)="_onTargetUpdate($event)"
+    (onEnter)="_onTargetEnter($event)"
+    (onLeave)="_onTargetLeave($event)"
+    (onMove)="_onTargetMove($event)"
   >
 
     <li [dnd-source]="'stage'"
-      (onStart)="onSourceStart($event)"
-      (onMove)="onSourceMove($event)"
-      (onEnd)="onSourceEnd($event)"
+      (onStart)="_onSourceStart($event)"
+      (onMove)="_onSourceMove($event)"
+      (onEnd)="_onSourceEnd($event)"
     >
       <div #dndHandler class="dnd-handler">
         Header 1
@@ -22,18 +22,18 @@
       <ul class="list"
         [dnd-target]="'task'"
         [customRenderFn]="customRenderFn"
-        (onAdd)="onTargetAdd($event)"
-        (onRemove)="onTargetRemove($event)"
-        (onUpdate)="onTargetUpdate($event)"
-        (onEnter)="onTargetEnter($event)"
-        (onLeave)="onTargetLeave($event)"
-        (onMove)="onTargetMove($event)"
+        (onAdd)="_onTargetAdd($event)"
+        (onRemove)="_onTargetRemove($event)"
+        (onUpdate)="_onTargetUpdate($event)"
+        (onEnter)="_onTargetEnter($event)"
+        (onLeave)="_onTargetLeave($event)"
+        (onMove)="_onTargetMove($event)"
       >
-        <li *ngFor="let i of list"
+        <li *ngFor="let i of _list"
           [dnd-source]="'task'"
-          (onStart)="onSourceStart($event)"
-          (onMove)="onSourceMove($event)"
-          (onEnd)="onSourceEnd($event)"
+          (onStart)="_onSourceStart($event)"
+          (onMove)="_onSourceMove($event)"
+          (onEnd)="_onSourceEnd($event)"
         >
           <div>
             <span>{{ i }}</span>
@@ -49,18 +49,18 @@
       </div>
       <ul class="list"
         [dnd-target]="'task'"
-        (onAdd)="onTargetAdd($event)"
-        (onRemove)="onTargetRemove($event)"
-        (onUpdate)="onTargetUpdate($event)"
-        (onEnter)="onTargetEnter($event)"
-        (onLeave)="onTargetLeave($event)"
-        (onMove)="onTargetMove($event)"
+        (onAdd)="_onTargetAdd($event)"
+        (onRemove)="_onTargetRemove($event)"
+        (onUpdate)="_onTargetUpdate($event)"
+        (onEnter)="_onTargetEnter($event)"
+        (onLeave)="_onTargetLeave($event)"
+        (onMove)="_onTargetMove($event)"
       >
-        <li *ngFor="let i of list"
+        <li *ngFor="let i of _list"
           [dnd-source]="'task'"
-          (onStart)="onSourceStart($event)"
-          (onMove)="onSourceMove($event)"
-          (onEnd)="onSourceEnd($event)"
+          (onStart)="_onSourceStart($event)"
+          (onMove)="_onSourceMove($event)"
+          (onEnd)="_onSourceEnd($event)"
         >
           <div>
             <span>{{ i }}</span>
@@ -76,18 +76,18 @@
 <section class="page">
   <ul class="list"
     [dnd-target]="'task'"
-    (onAdd)="onTargetAdd($event)"
-    (onRemove)="onTargetRemove($event)"
-    (onUpdate)="onTargetUpdate($event)"
-    (onEnter)="onTargetEnter($event)"
-    (onLeave)="onTargetLeave($event)"
-    (onMove)="onTargetMove($event)"
+    (onAdd)="_onTargetAdd($event)"
+    (onRemove)="_onTargetRemove($event)"
+    (onUpdate)="_onTargetUpdate($event)"
+    (onEnter)="_onTargetEnter($event)"
+    (onLeave)="_onTargetLeave($event)"
+    (onMove)="_onTargetMove($event)"
   >
-    <li *ngFor="let i of list"
+    <li *ngFor="let i of _list"
       [dnd-source]="'task'"
-      (onStart)="onSourceStart($event)"
-      (onMove)="onSourceMove($event)"
-      (onEnd)="onSourceEnd($event)"
+      (onStart)="_onSourceStart($event)"
+      (onMove)="_onSourceMove($event)"
+      (onEnd)="_onSourceEnd($event)"
     >
       <div>
         <span>{{ i }}</span>

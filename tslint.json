@@ -38,7 +38,6 @@
     "ordered-imports": false,
     "no-console": false,
     "one-variable-per-declaration": false,
-    "no-unused-expression": false,
-    "no-unused-variable": false
+    "no-unused-variable": [true, {"ignore-pattern": "^(_.*)$"}]
   }
 }

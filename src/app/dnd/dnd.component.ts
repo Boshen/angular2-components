@@ -18,42 +18,42 @@ import { DnDSource, DnDTarget } from '../components'
 })
 export class DnDPage {
 
-  private list = range(1, 10)
+  private _list = range(1, 20)
 
-  private onSourceStart(data) {
-    console.log('source start', data)
+  private _onSourceStart(data) {
+    // console.log('source start', data)
   }
 
-  private onSourceMove(data) {
-    console.log('source move', data)
+  private _onSourceMove(data) {
+    // console.log('source move', data)
   }
 
-  private onSourceEnd(data) {
-    console.log('source end', data)
+  private _onSourceEnd(data) {
+    // console.log('source end', data)
   }
 
-  private onTargetAdd(data) {
-    console.log('target add', data)
+  private _onTargetAdd(data) {
+    // console.log('target add', data)
   }
 
-  private onTargetRemove(data) {
-    console.log('target remove', data)
+  private _onTargetRemove(data) {
+    // console.log('target remove', data)
   }
 
-  private onTargetUpdate(data) {
-    console.log('target update', data)
+  private _onTargetUpdate(data) {
+    // console.log('target update', data)
   }
 
-  private onTargetEnter(data) {
-    console.log('target enter', data)
+  private _onTargetEnter(data) {
+    // console.log('target enter', data)
   }
 
-  private onTargetLeave(data) {
-    console.log('target leave', data)
+  private _onTargetLeave(data) {
+    // console.log('target leave', data)
   }
 
-  private onTargetMove(data) {
-    console.log('target move', data)
+  private _onTargetMove(data) {
+    // console.log('target move', data)
   }
 
 }
