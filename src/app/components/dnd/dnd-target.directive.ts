@@ -1,7 +1,6 @@
-import { Directive, Input, Output, OnInit, OnDestroy, ViewContainerRef, HostListener, EventEmitter } from '@angular/core'
+import { Directive, Input, Output, OnInit, OnDestroy,
+  ViewContainerRef, EventEmitter } from '@angular/core'
 import { Subject } from 'rxjs/Subject'
-import { Observable } from 'rxjs/Observable'
-import { Subscription } from 'rxjs/Subscription'
 
 import { DnDService } from './dnd.service'
 import { forEach } from 'lodash'

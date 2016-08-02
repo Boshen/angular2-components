@@ -1,4 +1,5 @@
-import { Component, ViewEncapsulation } from '@angular/core'
+import { Component } from '@angular/core'
+import { range } from 'lodash'
 
 import { DnDSource, DnDTarget } from '../components'
 
@@ -16,51 +17,42 @@ import { DnDSource, DnDTarget } from '../components'
   templateUrl: './dnd.template.html',
 })
 export class DnDPage {
-  private list = [
-    1,2,3,4,5,6,7,8
-  ]
 
-  constructor(
-  ) {
-  }
+  private list = range(1, 10)
 
-  dndOptions = {
-    test: 'test'
-  }
-
-  onSourceStart(data) {
+  private onSourceStart(data) {
     console.log('source start', data)
   }
 
-  onSourceMove(data) {
+  private onSourceMove(data) {
     console.log('source move', data)
   }
 
-  onSourceEnd(data) {
+  private onSourceEnd(data) {
     console.log('source end', data)
   }
 
-  onTargetAdd(data) {
+  private onTargetAdd(data) {
     console.log('target add', data)
   }
 
-  onTargetRemove(data) {
+  private onTargetRemove(data) {
     console.log('target remove', data)
   }
 
-  onTargetUpdate(data) {
+  private onTargetUpdate(data) {
     console.log('target update', data)
   }
 
-  onTargetEnter(data) {
+  private onTargetEnter(data) {
     console.log('target enter', data)
   }
 
-  onTargetLeave(data) {
+  private onTargetLeave(data) {
     console.log('target leave', data)
   }
 
-  onTargetMove(data) {
+  private onTargetMove(data) {
     console.log('target move', data)
   }
 

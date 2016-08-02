@@ -1,4 +1,5 @@
-import { Directive, Input, Output, OnDestroy, ViewContainerRef, HostListener, ContentChild, AfterViewInit, EventEmitter } from '@angular/core'
+import { Directive, Input, Output, OnDestroy, ViewContainerRef,
+  ContentChild, AfterViewInit, EventEmitter } from '@angular/core'
 
 import { Observable } from 'rxjs/Observable'
 import { Subject } from 'rxjs/Subject'
@@ -45,7 +46,6 @@ export class DnDSource implements OnDestroy, AfterViewInit {
           e: e,
           payload: payload
         })
-        // this.onStart.emit({ removeIndex: sourceIndex })
       })
 
     this.dndService.addSource(dragSource, this.dragStart$, {
@@ -57,7 +57,6 @@ export class DnDSource implements OnDestroy, AfterViewInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe()
-    // this.dndService.removeSource(this.viewContainerRef.element.nativeElement)
   }
 
 }

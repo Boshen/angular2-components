@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs/Observable'
 import { Subject } from 'rxjs/Subject'
-import { Subscription } from 'rxjs/Subscription'
 
 import 'rxjs/add/observable/fromEvent'
 import 'rxjs/add/operator/concatMap'
@@ -17,26 +16,16 @@ import 'rxjs/add/operator/switch'
 @Injectable()
 export class DnDService {
 
-  private sources = new Map<any, any>()
+  public dragEnter$: Subject<any> = new Subject<any>()
+
   private targets = new Map<any, any>()
   private mouseup$: Observable<any> = Observable.fromEvent(document, 'mouseup')
   private mousemove$: Observable<any> = Observable.fromEvent(document, 'mousemove')
-  public dragEnter$: Subject<any> = new Subject<any>()
   private previousDropTarget
-
-  constructor() {
-  }
 
   addSource(dragSource, dragStart$, sourceEvents) {
     this.listenSource(dragSource, dragStart$, sourceEvents)
-    // this.sources.set(element, subscription)
   }
-
-  // removeSource(element) {
-    // let subscription = this.sources.get(element)
-    // subscription.unsubscribe()
-    // this.sources.delete(element)
-  // }
 
   addTarget(element, subject) {
     this.targets.set(element, subject)
@@ -86,7 +75,6 @@ export class DnDService {
             let reference
             let elementBehindCursor = this.getElementBehindPoint(clone, mm.clientX, mm.clientY)
             let dropTarget = this.getDropTarget(elementBehindCursor, payload.key)
-
 
             if (dropTarget) {
               immediate = this.getImmediateChild(dropTarget, elementBehindCursor)
@@ -144,9 +132,11 @@ export class DnDService {
   private getRectWidth(rect) {
     return rect.width || (rect.right - rect.left)
   }
+
   private getRectHeight(rect) {
     return rect.height || (rect.bottom - rect.top)
   }
+
   private getDropTarget(el, key) {
     while (el && el.parentNode !== document.body) {
       if (this.targets.has(el) && this.targets.get(el).key === key) {
@@ -156,6 +146,7 @@ export class DnDService {
     }
     return null
   }
+
   private getElementBehindPoint(point, x, y) {
     let p = point || {};
     let state = p.className;
@@ -165,14 +156,16 @@ export class DnDService {
     p.className = state;
     return el;
   }
-  getOffset(el) {
-    var rect = el.getBoundingClientRect();
+
+  private getOffset(el) {
+    let rect = el.getBoundingClientRect();
     return {
       left: rect.left + this.getScroll('scrollLeft', 'pageXOffset'),
       top: rect.top + this.getScroll('scrollTop', 'pageYOffset')
     };
   }
-  getScroll(scrollProp, offsetProp) {
+
+  private getScroll(scrollProp, offsetProp) {
     if (typeof global[offsetProp] !== 'undefined') {
       return global[offsetProp];
     }
@@ -181,7 +174,8 @@ export class DnDService {
     }
     return document.body[scrollProp];
   }
-  getCoord(coord, e) {
+
+  private getCoord(coord, e) {
     let host = this.getEventHost(e);
     let missMap = {
         pageX: 'clientX', // IE8
@@ -192,7 +186,8 @@ export class DnDService {
       }
     return host[coord];
   }
-  getEventHost(e) {
+
+  private getEventHost(e) {
     // on touchend event, we have to use `e.changedTouches`
     // see http://stackoverflow.com/questions/7192563/touchend-event-properties
     // see https://github.com/bevacqua/dragula/issues/34
@@ -204,27 +199,34 @@ export class DnDService {
     }
     return e;
   }
+
   private whichMouseButton (e) {
     if (e.touches !== void 0) { return e.touches.length; }
-    if (e.which !== void 0 && e.which !== 0) { return e.which; } // see https://github.com/bevacqua/dragula/issues/261
+    // see https://github.com/bevacqua/dragula/issues/261
+    if (e.which !== void 0 && e.which !== 0) { return e.which; }
     if (e.buttons !== void 0) { return e.buttons; }
-    var button = e.button;
-    if (button !== void 0) { // see https://github.com/jquery/jquery/blob/99e8ff1baa7ae341e94bb89c3e84570c7c3ad9ea/src/event.js#L573-L575
+    let button = e.button;
+    // see https://github.com/jquery/jquery/blob/99e8ff1baa7ae341e94bb89c3e84570c7c3ad9ea/src/event.js#L573-L575
+    if (button !== void 0) {
+      // tslint:disable-next-line:no-bitwise
       return button & 1 ? 1 : button & 2 ? 3 : (button & 4 ? 2 : 0);
     }
   }
-  manually(el) {
-    var sibling = el
+
+  private manually(el) {
+    let sibling = el
     do {
       sibling = sibling.nextSibling
     } while (sibling && sibling.nodeType !== 1)
     return sibling
   }
-  nextEl(el) {
+
+  private nextEl(el) {
     return el.nextElementSibling || this.manually(el)
   }
-  getImmediateChild(dropTarget, target) {
-    var immediate = target;
+
+  private getImmediateChild(dropTarget, target) {
+    let immediate = target;
     while (immediate !== dropTarget && this.getParent(immediate) !== dropTarget) {
       immediate = this.getParent(immediate);
       if (!immediate || immediate === document.documentElement) {
@@ -233,17 +235,20 @@ export class DnDService {
     }
     return immediate;
   }
-  getParent(el) {
+
+  private getParent(el) {
    return el.parentNode === document ? null : el.parentNode
   }
-  getReference(dropTarget, target, x, y) {
+
+  private getReference(dropTarget, target, x, y) {
     if (target !== dropTarget) {
       return this.inside(target, x, y)
     } else {
       return this.outside(dropTarget, x, y)
     }
   }
-  outside(dropTarget, x, y) { // slower, but able to figure out any position
+
+  private outside(dropTarget, x, y) { // slower, but able to figure out any position
     let len = dropTarget.children.length;
     let el;
     let rect;
@@ -257,7 +262,7 @@ export class DnDService {
     return null;
   }
 
-  inside(target, x, y) { // faster, but only available if dropped inside a child element
+  private inside(target, x, y) { // faster, but only available if dropped inside a child element
     let rect = target.getBoundingClientRect();
     // if (horizontal) {
       // return resolve(x > rect.left + getRectWidth(rect) / 2);
@@ -265,7 +270,7 @@ export class DnDService {
     return this.resolve(y > rect.top + this.getRectHeight(rect) / 2, target);
   }
 
-  resolve (after, target) {
+  private resolve(after, target) {
     return after ? this.nextEl(target) : target;
   }
 
