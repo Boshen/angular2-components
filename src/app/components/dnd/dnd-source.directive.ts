@@ -14,6 +14,7 @@ import { DnDService } from './dnd.service'
 export class DnDSource implements OnDestroy, AfterViewInit {
 
   @Input('dnd-source') key = ''
+  @Input() axis
 
   @Output() onStart = new EventEmitter()
   @Output() onMove = new EventEmitter()
@@ -35,9 +36,11 @@ export class DnDSource implements OnDestroy, AfterViewInit {
 
     let parent = dragSource.parentNode
     let sourceIndex = Array.prototype.indexOf.call(parent.children, dragSource)
+
     let payload = {
       key: this.key,
-      sourceIndex: sourceIndex
+      sourceIndex: sourceIndex,
+      axis: this.axis
     }
 
     this.subscription = Observable.fromEvent(dragElement, 'mousedown')

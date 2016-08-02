@@ -58,6 +58,8 @@ export class DnDService {
         let offset = this.getOffset(dragSource);
         let offsetX = this.getCoord('pageX', e) - offset.left;
         let offsetY = this.getCoord('pageY', e) - offset.top;
+        clone.style.left = offset.left + 'px'
+        clone.style.top = offset.top + 'px'
 
         return this.mousemove$
           // .debounceTime(100)
@@ -67,9 +69,15 @@ export class DnDService {
             let clientY = this.getCoord('clientY', mm);
             let left = clientX - offsetX
             let top  = clientY - offsetY
-            clone.style.top = top + 'px'
-            clone.style.left = left + 'px'
             clone.style.display = 'block'
+            if (payload.axis === 'y') {
+              clone.style.top = top + 'px'
+            } else if (payload.axis === 'x') {
+              clone.style.left = left + 'px'
+            } else {
+              clone.style.left = left + 'px'
+              clone.style.top = top + 'px'
+            }
 
             let immediate
             let reference
@@ -78,7 +86,7 @@ export class DnDService {
 
             if (dropTarget) {
               immediate = this.getImmediateChild(dropTarget, elementBehindCursor)
-              reference = this.getReference(dropTarget, immediate, clientX, clientY)
+              reference = this.getReference(dropTarget, immediate, clientX, clientY, payload.axis)
               this.targets.get(dropTarget).dragMove$.next({
                 event: mm,
                 clone: clone,
@@ -241,33 +249,34 @@ export class DnDService {
    return el.parentNode === document ? null : el.parentNode
   }
 
-  private getReference(dropTarget, target, x, y) {
+  private getReference(dropTarget, target, x, y, axis) {
+    let horizontal = axis === 'x'
     if (target !== dropTarget) {
-      return this.inside(target, x, y)
+      return this.inside(target, x, y, horizontal)
     } else {
-      return this.outside(dropTarget, x, y)
+      return this.outside(dropTarget, x, y, horizontal)
     }
   }
 
-  private outside(dropTarget, x, y) { // slower, but able to figure out any position
+  private outside(dropTarget, x, y, horizontal) { // slower, but able to figure out any position
     let len = dropTarget.children.length;
     let el;
     let rect;
     for (let i = 0; i < len; i++) {
       el = dropTarget.children[i];
       rect = el.getBoundingClientRect();
-      // if (horizontal && (rect.left + rect.width / 2) > x) { return el; }
-      // if (!horizontal && (rect.top + rect.height / 2) > y) { return el; }
+      if (horizontal && (rect.left + rect.width / 2) > x) { return el; }
+      if (!horizontal && (rect.top + rect.height / 2) > y) { return el; }
       if ((rect.top + rect.height / 2) > y) { return el; }
     }
     return null;
   }
 
-  private inside(target, x, y) { // faster, but only available if dropped inside a child element
+  private inside(target, x, y, horizontal) { // faster, but only available if dropped inside a child element
     let rect = target.getBoundingClientRect();
-    // if (horizontal) {
-      // return resolve(x > rect.left + getRectWidth(rect) / 2);
-    // }
+    if (horizontal) {
+      return this.resolve(x > rect.left + this.getRectWidth(rect) / 2, target);
+    }
     return this.resolve(y > rect.top + this.getRectHeight(rect) / 2, target);
   }
 

@@ -12,6 +12,7 @@
   >
 
     <li [dnd-source]="'stage'"
+      [axis]="'x'"
       (onStart)="_onSourceStart($event)"
       (onMove)="_onSourceMove($event)"
       (onEnd)="_onSourceEnd($event)"
@@ -43,7 +44,12 @@
       </ul>
     </li>
 
-    <li [dnd-source]="'stage'">
+    <li [dnd-source]="'stage'"
+      [axis]="'x'"
+      (onStart)="_onSourceStart($event)"
+      (onMove)="_onSourceMove($event)"
+      (onEnd)="_onSourceEnd($event)"
+    >
       <div #dndHandler class="dnd-handler">
         Header 2
       </div>
@@ -85,6 +91,7 @@
   >
     <li *ngFor="let i of _list"
       [dnd-source]="'task'"
+      [axis]="'y'"
       (onStart)="_onSourceStart($event)"
       (onMove)="_onSourceMove($event)"
       (onEnd)="_onSourceEnd($event)"
