@@ -17,6 +17,8 @@ export class DnDTarget implements OnInit, OnDestroy {
 
   @Input('dnd-target') key = ''
 
+  @Input() customRenderFn
+
   // element is added to the current list
   @Output() onAdd = new EventEmitter()
 
@@ -80,8 +82,8 @@ export class DnDTarget implements OnInit, OnDestroy {
     })
 
     this.subscription2 = this.dragMove$.subscribe((o) => {
-      this.onMove.emit('DRAG MOVE')
-      dropTarget.insertBefore(o.dragSource, o.reference)
+      this.onMove.emit('DRAG Move')
+      this.render(dropTarget, o)
     })
 
     this.subscription3 = this.dragEnter$.subscribe((o) => {
@@ -100,6 +102,14 @@ export class DnDTarget implements OnInit, OnDestroy {
     this.subscription2.unsubscribe()
     this.subscription3.unsubscribe()
     this.subscription4.unsubscribe()
+  }
+
+  render(dropTarget, o) {
+    if (typeof this.customRenderFn === 'function') {
+      this.customRenderFn(dropTarget, o)
+    } else {
+      dropTarget.insertBefore(o.dragSource, o.reference)
+    }
   }
 
 }

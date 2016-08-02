@@ -21,6 +21,7 @@
       </div>
       <ul class="list"
         [dnd-target]="'task'"
+        [customRenderFn]="customRenderFn"
         (onAdd)="onTargetAdd($event)"
         (onRemove)="onTargetRemove($event)"
         (onUpdate)="onTargetUpdate($event)"
