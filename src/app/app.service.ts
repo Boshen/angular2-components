@@ -6,10 +6,6 @@ export class AppState {
   // @HmrState() is used by HMR to track the state of any object during HMR (hot module replacement)
   @HmrState() _state = { };
 
-  constructor() {
-
-  }
-
   // already return a clone of the current state
   get state() {
     return this._state = this._clone(this._state);
@@ -18,7 +14,6 @@ export class AppState {
   set state(value) {
     throw new Error('do not mutate the `.state` directly');
   }
-
 
   get(prop?: any) {
     // use our state getter for the clone
@@ -30,7 +25,6 @@ export class AppState {
     // internally mutate our state
     return this._state[prop] = value;
   }
-
 
   _clone(object) {
     // simple object clone

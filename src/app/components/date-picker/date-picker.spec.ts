@@ -66,7 +66,7 @@ describe('DatePicker', () => {
     })
 
     it('should set default locale', () => {
-      expect(datePickerInstance.locale).toEqual(locales['zh'])
+      expect(datePickerInstance.locale).toEqual(locales.zh)
     })
 
     it('should trigger @Output() selectDate', () => {
@@ -434,7 +434,7 @@ describe('DatePicker', () => {
         matrix.slice(1, matrix.length).forEach((row, i) => {
           expect(row.length).toEqual(7)
           row.forEach((cell, j) => {
-            let args = (<any>datePickerInstance.createDateObject).calls.argsFor(i * row.length + j)
+            let args = (<any> datePickerInstance.createDateObject).calls.argsFor(i * row.length + j)
             expect(args[0]).toEqual(new Date(2016, 5, 26 + i * row.length + j))
             expect(args[1]).toEqual(date)
             expect(args[2]).toEqual(Mode.Day)
@@ -455,7 +455,7 @@ describe('DatePicker', () => {
         matrix.slice(1, matrix.length).forEach((row, i) => {
           expect(row.length).toEqual(7)
           row.forEach((cell, j) => {
-            let args = (<any>datePickerInstance.createDateObject).calls.argsFor(i * row.length + j)
+            let args = (<any> datePickerInstance.createDateObject).calls.argsFor(i * row.length + j)
             expect(args[0]).toEqual(new Date(2016, 6, 31 + i * row.length + j))
             expect(args[1]).toEqual(date)
             expect(args[2]).toEqual(Mode.Day)
@@ -473,7 +473,7 @@ describe('DatePicker', () => {
         matrix.forEach((row, i) => {
           expect(row.length).toEqual(3)
           row.forEach((cell, j) => {
-            let args = (<any>datePickerInstance.createDateObject).calls.argsFor(i * row.length + j)
+            let args = (<any> datePickerInstance.createDateObject).calls.argsFor(i * row.length + j)
             expect(args[0]).toEqual(new Date(2016, i * row.length + j, 1))
             expect(args[1]).toEqual(date)
             expect(args[2]).toEqual(Mode.Month)
@@ -491,7 +491,7 @@ describe('DatePicker', () => {
         matrix.forEach((row, i) => {
           expect(row.length).toEqual(4)
           row.forEach((cell, j) => {
-            let args = (<any>datePickerInstance.createDateObject).calls.argsFor(i * row.length + j)
+            let args = (<any> datePickerInstance.createDateObject).calls.argsFor(i * row.length + j)
             expect(args[0]).toEqual(new Date(2016 + i * row.length + j, 0, 1))
             expect(args[1]).toEqual(date)
             expect(args[2]).toEqual(Mode.Year)

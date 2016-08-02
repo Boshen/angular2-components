@@ -15,7 +15,6 @@ import { disableDeprecatedForms, provideForms } from '@angular/forms';
 import { provideWebpack } from '@angularclass/webpack-toolkit';
 import { providePrefetchIdleCallbacks } from '@angularclass/request-idle-callback';
 
-
 import { routes, asyncRoutes, prefetchRouteCallbacks } from '../app/app.routes';
 import { APP_RESOLVER_PROVIDERS } from '../app/app.resolver';
 /*

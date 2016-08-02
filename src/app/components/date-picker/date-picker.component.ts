@@ -358,7 +358,8 @@ export class DatePicker {
   }
 
   isSameDate(date: Date, current: Date, mode) {
-    let d1, d2
+    let d1
+    let d2
     switch (mode) {
       case Mode.Day:
         d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate())

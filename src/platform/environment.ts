@@ -25,10 +25,10 @@ if ('production' === ENV) {
 } else {
 
   _decorateComponentRef = (cmpRef) => {
-    let _ng = (<any>window).ng;
+    let _ng = (<any> window).ng;
     enableDebugTools(cmpRef);
-    (<any>window).ng.probe = _ng.probe;
-    (<any>window).ng.coreTokens = _ng.coreTokens;
+    (<any> window).ng.probe = _ng.probe;
+    (<any> window).ng.coreTokens = _ng.coreTokens;
     return cmpRef;
   };
 

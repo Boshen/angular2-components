@@ -15,11 +15,9 @@ export const routes: RouterConfig = [
 export const asyncRoutes: AsyncRoutes = {
 };
 
-
 // Optimizations for initial loads
 // An array of callbacks to be invoked after bootstrap to prefetch async routes
 export const prefetchRouteCallbacks: Array<IdleCallbacks> = [
 ];
-
 
 // Es6PromiseLoader and AsyncRoutes interfaces are defined in custom-typings

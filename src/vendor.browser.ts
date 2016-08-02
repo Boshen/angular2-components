@@ -23,7 +23,6 @@ import 'rxjs/add/operator/mergeMap';
 if ('production' === ENV) {
   // Production
 
-
 } else {
   // Development
   require('angular2-hmr');
