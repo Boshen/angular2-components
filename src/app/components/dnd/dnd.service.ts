@@ -80,6 +80,7 @@ export class DnDService {
               immediate = this.getImmediateChild(dropTarget, elementBehindCursor)
               reference = this.getReference(dropTarget, immediate, clientX, clientY)
               this.targets.get(dropTarget).dragMove$.next({
+                event: mm,
                 clone: clone,
                 dragSource: dragSource,
                 reference: reference,
@@ -92,8 +93,8 @@ export class DnDService {
             } else {
               if (this.previousDropTarget) {
                 this.targets.get(this.previousDropTarget).dragLeave$.next()
+                this.previousDropTarget = null
               }
-              this.previousDropTarget = null
             }
 
             sourceEvents.onMove.emit()
