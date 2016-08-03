@@ -1,0 +1,36 @@
+.scrum {
+  display: flex;
+}
+
+.list {
+  width: 500px;
+  border: 1px solid gray;
+  height: 500px;
+  margin: 20px;
+  overflow-y: auto;
+}
+
+.list li {
+  height: 100px;
+}
+
+.h-list {
+  display: flex;
+  width: 500px;
+  flex-wrap: wrap;
+}
+
+.h-list li {
+  margin: 20px;
+}
+
+.drag-clone {
+  /* box-shadow: 0 7px 21px rgba(0,0,0,.15); */
+  /* -webkit-transform: rotate(2deg); */
+  /* transform: rotate(2deg); */
+}
+
+.drag-hide {
+  display: none!important;
+}
+

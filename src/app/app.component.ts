@@ -11,6 +11,8 @@ import { AppState } from './app.service';
  */
 @Component({
   selector: 'app',
+  directives: [
+  ],
   encapsulation: ViewEncapsulation.None,
   styleUrls: [
     './app.style.css'
@@ -25,12 +27,17 @@ import { AppState } from './app.service';
         <a [routerLink]=" ['./date-picker'] ">
           Date Picker
         </a>
+        |
+        <a [routerLink]=" ['./dnd'] ">
+          DnD
+        </a>
       </span>
     </nav>
 
     <main>
       <router-outlet></router-outlet>
     </main>
+    <dnd-clone></dnd-clone>
   `
 })
 export class App {

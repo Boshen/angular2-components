@@ -1,0 +1,105 @@
+<h1>Scrum Board</h1>
+
+<section class="page">
+  <ul class="scrum"
+    [dnd-target]="'stage'"
+    (onAdd)="_onTargetAdd($event)"
+    (onRemove)="_onTargetRemove($event)"
+    (onUpdate)="_onTargetUpdate($event)"
+    (onEnter)="_onTargetEnter($event)"
+    (onLeave)="_onTargetLeave($event)"
+    (onMove)="_onTargetMove($event)"
+  >
+
+    <li [dnd-source]="'stage'"
+      [axis]="'x'"
+      (onStart)="_onSourceStart($event)"
+      (onMove)="_onSourceMove($event)"
+      (onEnd)="_onSourceEnd($event)"
+    >
+      <div #dndHandler class="dnd-handler">
+        Header 1
+      </div>
+      <ul class="list"
+        [dnd-target]="'task'"
+        [customRenderFn]="customRenderFn"
+        (onAdd)="_onTargetAdd($event)"
+        (onRemove)="_onTargetRemove($event)"
+        (onUpdate)="_onTargetUpdate($event)"
+        (onEnter)="_onTargetEnter($event)"
+        (onLeave)="_onTargetLeave($event)"
+        (onMove)="_onTargetMove($event)"
+      >
+        <li *ngFor="let i of _list"
+          [dnd-source]="'task'"
+          (onStart)="_onSourceStart($event)"
+          (onMove)="_onSourceMove($event)"
+          (onEnd)="_onSourceEnd($event)"
+        >
+          <div>
+            <span>{{ i }}</span>
+            <span>asdf</span>
+          </div>
+        </li>
+      </ul>
+    </li>
+
+    <li [dnd-source]="'stage'"
+      [axis]="'x'"
+      (onStart)="_onSourceStart($event)"
+      (onMove)="_onSourceMove($event)"
+      (onEnd)="_onSourceEnd($event)"
+    >
+      <div #dndHandler class="dnd-handler">
+        Header 2
+      </div>
+      <ul class="list"
+        [dnd-target]="'task'"
+        (onAdd)="_onTargetAdd($event)"
+        (onRemove)="_onTargetRemove($event)"
+        (onUpdate)="_onTargetUpdate($event)"
+        (onEnter)="_onTargetEnter($event)"
+        (onLeave)="_onTargetLeave($event)"
+        (onMove)="_onTargetMove($event)"
+      >
+        <li *ngFor="let i of _list"
+          [dnd-source]="'task'"
+          (onStart)="_onSourceStart($event)"
+          (onMove)="_onSourceMove($event)"
+          (onEnd)="_onSourceEnd($event)"
+        >
+          <div>
+            <span>{{ i }}</span>
+            <span>asdf</span>
+          </div>
+        </li>
+      </ul>
+    </li>
+
+  </ul>
+</section>
+
+<section class="page">
+  <ul class="list"
+    [dnd-target]="'task'"
+    (onAdd)="_onTargetAdd($event)"
+    (onRemove)="_onTargetRemove($event)"
+    (onUpdate)="_onTargetUpdate($event)"
+    (onEnter)="_onTargetEnter($event)"
+    (onLeave)="_onTargetLeave($event)"
+    (onMove)="_onTargetMove($event)"
+  >
+    <li *ngFor="let i of _list"
+      [dnd-source]="'task'"
+      [axis]="'y'"
+      (onStart)="_onSourceStart($event)"
+      (onMove)="_onSourceMove($event)"
+      (onEnd)="_onSourceEnd($event)"
+    >
+      <div>
+        <span>{{ i }}</span>
+        <span>asdf</span>
+      </div>
+    </li>
+  </ul>
+</section>
