@@ -7,24 +7,48 @@ import { isNumber } from 'lodash'
 })
 export class ScrollDirective {
 
-  scrollIndex: number
-
   private el: HTMLElement
 
   constructor(el: ElementRef) {
     this.el = el.nativeElement
   }
 
-  scrollToIndex(index) {
-    let css = window.getComputedStyle(this.el);
-    let hasScroll = css.maxHeight && css.overflowY === 'auto';
-    if (hasScroll && isNumber(index) && index >= 0 && index < this.el.children.length) {
-      (<any> this.el.children[index]).scrollIntoView(true)
-    }
+  public scrollToTop() {
+    this.el.scrollTop = 0
   }
 
-  scrollToTop() {
-    this.el.scrollTop = 0
+  public scrollToIndex(index) {
+    if (!this.hasScroll()) {
+      return
+    }
+    if (!isNumber(index) || index < 0 || index >= this.el.children.length) {
+      return
+    }
+    let child = this.el.children[index]
+    let childHeight = child.getBoundingClientRect().height
+    let parentHeight = this.el.getBoundingClientRect().height
+    let to = childHeight * (index + 1) + childHeight / 2 - parentHeight
+    this.scrollTo(this.el, to, 200)
+  }
+
+  public scrollTo(element, to, duration) {
+    if (duration <= 0) {
+      return
+    }
+    let diff = to - element.scrollTop
+    let tick = diff / duration * 10
+    window.setTimeout(() => {
+      element.scrollTop = element.scrollTop + tick
+      if (element.scrollTop === to) {
+        return
+      }
+      this.scrollTo(element, to, duration - 10)
+    }, 10)
+  }
+
+  private hasScroll() {
+    let css = window.getComputedStyle(this.el)
+    return css.maxHeight && css.overflowY === 'auto'
   }
 
 }
