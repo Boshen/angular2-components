@@ -3,11 +3,15 @@ import { Home } from './home';
 
 import { DatePickerPage } from './date-picker'
 import { PieChartPage } from './pie-chart'
+import { TimePickerPage } from './time-picker'
+import { MemberPickerPage } from './member-picker'
 
 export const routes: RouterConfig = [
   { path: '', component: Home },
   { path: 'date-picker', component: DatePickerPage },
   { path: 'pie-chart', component: PieChartPage },
+  { path: 'time-picker', component: TimePickerPage },
+  { path: 'member-picker', component: MemberPickerPage }
 ];
 
 // Async load a component using Webpack's require with es6-promise-loader and webpack `require`

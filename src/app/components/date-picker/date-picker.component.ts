@@ -17,7 +17,7 @@ export enum Mode {
   Year
 }
 
-export enum Action {
+enum Action {
   MoveLeft,
   MoveRight,
   ChangeMode,

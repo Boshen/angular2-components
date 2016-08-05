@@ -1,0 +1,30 @@
+<div class="header">
+  <form>
+    <input
+      [placeholder]="inputPlaceholder || ''"
+      (ngModelChange)="changeQuery($event)"
+      [ngModel]="query$ | async"
+      name="time-input"
+      autofocus
+    />
+
+    <button
+      type="submit"
+      [disabled]="disableButton$ | async"
+      (click)="onSubmit()">
+      Submit
+    </button>
+  <form>
+<div>
+
+<div>
+  <ul class="list" scroll>
+    <li
+      *ngFor="let time of list$ | async; trackBy time?.id"
+      class="item"
+      [class.is-active]="time.__isActive__"
+      (click)="onSelectTime(time)">
+      {{ time.title }}
+    </li>
+  </ul>
+</div>
