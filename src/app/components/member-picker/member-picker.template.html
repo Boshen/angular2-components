@@ -1,0 +1,20 @@
+<div class="header">
+  <input
+    [placeholder]="inputPlaceholder || ''"
+    (ngModelChange)="changeQuery($event)"
+    [ngModel]="query$ | async"
+    autofocus
+  />
+<div>
+
+<div>
+  <ul class="list" scroll>
+    <li
+      *ngFor="let item of list$ | async; trackBy item?.id"
+      class="item"
+      [class.is-active]="item.__isActive__"
+      (click)="onSelectTime(item)">
+      {{ item.title }}
+    </li>
+  </ul>
+</div>

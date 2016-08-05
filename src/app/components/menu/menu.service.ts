@@ -36,7 +36,7 @@ export class MenuService {
 
   private keyboardSubScription
 
-  construct({ initialList, selected, filterFn, scroll }) {
+  construct({ initialList, selected = null, filterFn = null, scroll = null }) {
 
       let scrollIndex = selected && findIndex(initialList || [], (item: MenuItem) => {
         return item.value === selected
