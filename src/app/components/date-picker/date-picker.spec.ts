@@ -1,13 +1,14 @@
 import {
-  async,
-  describe,
   inject,
-  it
+  async,
+  TestComponentBuilder,
+  TestBed,
+  ComponentFixture
 } from '@angular/core/testing'
 import { By } from '@angular/platform-browser'
-import { TestComponentBuilder, ComponentFixture } from '@angular/compiler/testing'
 import { Component, DebugElement } from '@angular/core'
 
+import { DatePickerModule } from './index'
 import { DatePicker, Mode } from './date-picker.component'
 import { locales } from './locales'
 
@@ -15,11 +16,14 @@ describe('DatePicker', () => {
   let builder: TestComponentBuilder
   let fixture: ComponentFixture<any>
 
-  beforeEach(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
-    builder = tcb
-  }))
-
   describe('IO', () => {
+    let datePickerDebugElement: DebugElement
+    let datePickerNativeElement: HTMLElement
+    let datePickerInstance: DatePicker
+    let testComponent: TestIOComponent
+    let fixtureInstance
+    let today
+
     @Component({
       template: `
         <date-picker
@@ -32,19 +36,23 @@ describe('DatePicker', () => {
         >
         </date-picker>',
       `,
-      directives: [ DatePicker ]
     })
     class TestIOComponent {
       startDate = new Date(2016, 6, 1)
       language = 'xxx'
     }
 
-    let datePickerDebugElement: DebugElement
-    let datePickerNativeElement: HTMLElement
-    let datePickerInstance: DatePicker
-    let testComponent: TestIOComponent
-    let fixtureInstance
-    let today
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports: [ DatePickerModule ],
+        declarations: [ TestIOComponent ]
+      })
+      TestBed.compileComponents()
+    }))
+
+    beforeEach(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+      builder = tcb
+    }))
 
     beforeEach(async(() => {
       today = new Date(2016, 6, 20)
@@ -117,6 +125,13 @@ describe('DatePicker', () => {
   })
 
   describe('render', () => {
+    let datePickerDebugElement: DebugElement
+    let datePickerNativeElement: HTMLElement
+    let datePickerInstance: DatePicker
+    let testComponent: TestRenderComponent
+    let fixtureInstance
+    let today
+
     @Component({
       template: `
         <date-picker
@@ -124,18 +139,22 @@ describe('DatePicker', () => {
         >
         </date-picker>',
       `,
-      directives: [ DatePicker ]
     })
     class TestRenderComponent {
       startDate = new Date(2016, 6, 19)
     }
 
-    let datePickerDebugElement: DebugElement
-    let datePickerNativeElement: HTMLElement
-    let datePickerInstance: DatePicker
-    let testComponent: TestRenderComponent
-    let fixtureInstance
-    let today
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports: [ DatePickerModule ],
+        declarations: [ TestRenderComponent ]
+      })
+      TestBed.compileComponents()
+    }))
+
+    beforeEach(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+      builder = tcb
+    }))
 
     beforeEach(async(() => {
       today = new Date(2016, 6, 20)
@@ -204,16 +223,27 @@ describe('DatePicker', () => {
   })
 
   describe('method', () => {
-    @Component({
-      template: '<date-picker></date-picker>',
-      directives: [ DatePicker ]
-    })
-    class TestMethodsComponent {}
-
     let datePickerDebugElement: DebugElement
     let datePickerNativeElement: HTMLElement
     let datePickerInstance: DatePicker
     let testComponent: TestMethodsComponent
+
+    @Component({
+      template: '<date-picker></date-picker>',
+    })
+    class TestMethodsComponent {}
+
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports: [ DatePickerModule ],
+        declarations: [ TestMethodsComponent ]
+      })
+      TestBed.compileComponents()
+    }))
+
+    beforeEach(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+      builder = tcb
+    }))
 
     beforeEach(async(() => {
       builder.createAsync(TestMethodsComponent).then((f) => {

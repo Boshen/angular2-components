@@ -1,16 +1,10 @@
 import { Component } from '@angular/core';
 
-import { PieChart } from '../components'
 import { range } from 'lodash'
 
 @Component({
   selector: 'pie-chart-page',
-  directives: [
-    PieChart
-  ],
-  styleUrls: [
-    './pie-chart.style.css'
-  ],
+  styleUrls: [ './pie-chart.style.css' ],
   templateUrl: './pie-chart.template.html'
 })
 export class PieChartPage {
