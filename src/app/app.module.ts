@@ -10,6 +10,7 @@ import { routes } from './app.routes'
 import { Home } from './home'
 import { DatePickerPage } from './date-picker'
 import { PieChartPage } from './pie-chart'
+import { LineChartPage } from './line-chart'
 import { ComponentsModule } from './components'
 
 @NgModule({
@@ -17,7 +18,8 @@ import { ComponentsModule } from './components'
     AppComponent,
     Home,
     DatePickerPage,
-    PieChartPage
+    PieChartPage,
+    LineChartPage
   ],
   imports: [
     BrowserModule,

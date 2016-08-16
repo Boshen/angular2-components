@@ -27,6 +27,10 @@ import { Component, ViewEncapsulation } from '@angular/core';
         <a [routerLink]=" ['./pie-chart'] ">
           Pie Chart
         </a>
+        |
+        <a [routerLink]=" ['./line-chart'] ">
+          Line Chart
+        </a>
       </span>
     </nav>
 

@@ -1,0 +1,8 @@
+:host {
+  display: flex;
+  position: relative;
+}
+
+.popover {
+  position: absolute;
+}
